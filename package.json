@@ -4,6 +4,7 @@
   "description": "A simple express api",
   "main": "server.js",
   "scripts": {
+    "start": "nodemon server.js",
     "test": "jest"
   },
   "repository": {
