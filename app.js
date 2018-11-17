@@ -13,7 +13,7 @@ mongoose.connect('mongodb://Admin:'+process.env.MONGO_ATLAS_PW+'@shop-data-shard
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+//test
 
 // Routes which should handle requests
 app.use("/products", productsRoutes);
