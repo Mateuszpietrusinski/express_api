@@ -2,10 +2,10 @@
 
 Restful API based on Node.js / express. This project is still in development process. It may contains bugs, be careful to use it.
 
-##/Products endpoint <br />
-######Get Method
+## /Products endpoint 
+###### Get Method 
 Showing all the products stored in Database 
-######Post Method
+###### Post Method
 Adding new product. The payload should contain data like this:
 ```
 {
@@ -13,7 +13,7 @@ Adding new product. The payload should contain data like this:
 	"price" : "50.00"
 }
 ```
-######Patch Method
+###### Patch Method
 Updating product. To update the product you must transfer valid data e.g
 
 ```
@@ -28,7 +28,7 @@ or only one parameter:
 	"name": "ball",
 }
 ```
-######Delete Method
+###### Delete Method
 Deleting product. To delete a product you mass pass id:
 ```
 {
