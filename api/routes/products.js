@@ -5,56 +5,111 @@ const mongoose = require('mongoose');
 const Product = require('../Models/products.model');
 
 router.get('/', (req, res, next) => {
-    res.status(200).json({
-        message: 'Handling GET requests to /products'
-    });
+    Product.find()
+        .select('name price _id')
+        .then(docs => {
+            const response = {
+                count: docs.length,
+                products: docs.map(doc => {
+                    return {
+                        name: doc.name,
+                        price: doc.price,
+                        _id: doc._id,
+                        request: {
+                            type: 'GET',
+                            url: 'http:localhost:3000/products/' + doc._id
+                        }
+                    }
+                })
+            };
+            res.status(200).json(response);
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: 'Error: Can not get products from database'
+            })
+        })
 });
 
 router.post('/', async (req, res, next) => {
-    const productData = {
-        name: req.body.name,
-        price: req.body.price
-    };
     const product = new Product({
-       _id:  new mongoose.Types.ObjectId(),
+        _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
         price: req.body.price
     });
-    await product
+
+    const dbResponse = await product
         .save()
-        .exact()
-        .then(result => console.log(result))
-        .catch(err => console.log(err));
-    res.status(201).json({
-        message: 'Handling POST requests to /products',
-        createdProduct: product
-    });
+        .then((result) => {
+            const response = {
+                count: result.length,
+                products: {
+                    name: result.name,
+                    price: result.price,
+                    _id: result._id,
+                    request: {
+                        type: 'GET',
+                        url: 'http:localhost:3000/products/' + result._id
+                    }
+                }
+            };
+            res.status(201).json(response);
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: 'Error: Can not save product to database'
+            });
+        });
+
 });
 
 router.get('/:productId', (req, res, next) => {
     const id = req.params.productId;
-    if (id === 'special') {
-        res.status(200).json({
-            message: 'You discovered the special ID',
-            id: id
-        });
-    } else {
-        res.status(200).json({
-            message: 'You passed an ID'
-        });
-    }
+    Product.findById(id)
+        .select('name price _id')
+        .then(doc => {
+            if (doc) {
+                res.status(200).json(doc);
+            } else {
+                res.status(404).json({
+                    message: 'No valid entry found for provided Id'
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: 'Error: Can not get products from database'
+            })
+        })
 });
 
 router.patch('/:productId', (req, res, next) => {
-    res.status(200).json({
-        message: 'Updated product!'
-    });
+    const id = req.params.productId;
+    const updateOps = {};
+    for (const ops of req.body) {
+        updateOps[ops.propName] = ops.value
+    }
+    Product.update({_id: id}, {$set: updateOps})
+        .then(result => {
+            res.status(200).json(result);
+        })
+        .catch(err => {
+            res.status(500).json({
+                error: err
+            })
+        })
 });
 
 router.delete('/:productId', (req, res, next) => {
+    const id = req.params.productId;
     res.status(200).json({
         message: 'Deleted product!'
     });
+    Product.remove({_id: id})
+        .then(doc => {
+            res.status(200).json(doc)
+        })
+
 });
 
 module.exports = router;
