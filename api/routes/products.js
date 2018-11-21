@@ -3,10 +3,11 @@ const router = express.Router();
 const mongoose = require('mongoose');
 //Mongo models
 const Product = require('../Models/products.model');
-
+//Helpers
+const errorsHelper = require('../Helpers/errors');
 router.get('/', (req, res, next) => {
     Product.find()
-        .select('name price _id')
+        .select('- __v')
         .then(docs => {
             const response = {
                 count: docs.length,
@@ -17,7 +18,7 @@ router.get('/', (req, res, next) => {
                         _id: doc._id,
                         request: {
                             type: 'GET',
-                            url: 'http:localhost:3000/products/' + doc._id
+                            url: process.env.url + '/products/' + doc._id
                         }
                     }
                 })
@@ -49,7 +50,7 @@ router.post('/', async (req, res, next) => {
                     _id: result._id,
                     request: {
                         type: 'GET',
-                        url: 'http:localhost:3000/products/' + result._id
+                        url: process.env.url +'/products/' + result._id
                     }
                 }
             };
@@ -66,7 +67,7 @@ router.post('/', async (req, res, next) => {
 router.get('/:productId', (req, res, next) => {
     const id = req.params.productId;
     Product.findById(id)
-        .select('name price _id')
+        .select('- __v')
         .then(doc => {
             if (doc) {
                 res.status(200).json(doc);
@@ -94,9 +95,7 @@ router.patch('/:productId', (req, res, next) => {
             res.status(200).json(result);
         })
         .catch(err => {
-            res.status(500).json({
-                error: err
-            })
+            errorsHelper.catchError(res, err);
         })
 });
 

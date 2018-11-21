@@ -1,5 +1,6 @@
 {
     "env" : {
-      "MONGO_ATLAS_PW": "testpass"
+      "MONGO_ATLAS_PW": "testpass",
+      "url": "http://localhost:3000"
     }
 }
