@@ -12,6 +12,7 @@ const errorsHelper = require('../Helpers/errors');
 router.get('/', (req, res, next) => {
     Order.find()
         .select('_id product quantity')
+        .populate('product', 'name price')
         .then(result => {
             const data = result.map(v => {
                 return {
@@ -79,6 +80,7 @@ router.post('/', async (req, res, next) => {
 
 router.get('/:orderId', (req, res, next) => {
   Order.findById(req.params.orderId)
+      .populate('product', 'name price')
       .then(result => {
           if(!result){
               return res.status(404).json({
