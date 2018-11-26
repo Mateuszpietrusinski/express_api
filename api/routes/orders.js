@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-
+const checkAuth = require('../Middleware/check-auth');
 //models to db
 const Order = require('../Models/orders.model');
 const Product = require('../Models/products.model');
@@ -32,7 +32,7 @@ router.get('/', (req, res, next) => {
         })
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/',checkAuth, async (req, res, next) => {
     // Checking Product existing
     const productExist = await Product.findById(req.body.productId)
         .then(result => {
@@ -100,7 +100,7 @@ router.get('/:orderId', (req, res, next) => {
       })
 });
 
-router.delete('/:orderId', (req, res, next) => {
+router.delete('/:orderId',checkAuth, (req, res, next) => {
     Order.remove(req.params.orderId)
         .then(() => {
             res.status(200).json({
