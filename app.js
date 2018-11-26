@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 //API Routes
 const productsRoutes = require("./api/routes/products");
 const orderRoutes = require("./api/routes/orders");
+const userRoutes = require('./api/routes/user');
 
 //DB Connection
 mongoose.connect('mongodb://Admin:'+process.env.MONGO_ATLAS_PW+'@shop-data-shard-00-00-5bwme.mongodb.net:27017,shop-data-shard-00-01-5bwme.mongodb.net:27017,shop-data-shard-00-02-5bwme.mongodb.net:27017/test?ssl=true&replicaSet=shop-data-shard-0&authSource=admin&retryWrites=true', {useNewUrlParser: true});
@@ -19,6 +20,7 @@ app.use(bodyParser.json());
 // Routes which should handle requests
 app.use("/products", productsRoutes);
 app.use("/orders", orderRoutes);
+app.use("/user", userRoutes);
 
 // Handling  CORS errors
 app.use((req, res, next) => {

@@ -1,6 +1,7 @@
 {
     "env" : {
       "MONGO_ATLAS_PW": "testpass",
-      "url": "http://localhost:3000"
+      "url": "http://localhost:3000",
+      "JWT_SECRET_KEY": "afexvaws"
     }
 }
