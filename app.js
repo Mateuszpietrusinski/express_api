@@ -5,9 +5,9 @@ const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
 
 //API Routes
-const productsRoutes = require("./api/routes/products");
-const orderRoutes = require("./api/routes/orders");
-const userRoutes = require('./api/routes/user');
+const productsRoutes = require("./api/Routes/products");
+const orderRoutes = require("./api/Routes/orders");
+const userRoutes = require('./api/Routes/user');
 
 //DB Connection
 mongoose.connect('mongodb://Admin:'+process.env.MONGO_ATLAS_PW+'@shop-data-shard-00-00-5bwme.mongodb.net:27017,shop-data-shard-00-01-5bwme.mongodb.net:27017,shop-data-shard-00-02-5bwme.mongodb.net:27017/test?ssl=true&replicaSet=shop-data-shard-0&authSource=admin&retryWrites=true', {useNewUrlParser: true});
