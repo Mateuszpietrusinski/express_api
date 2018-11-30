@@ -1,5 +1,6 @@
 const Order = require('../../../Models/orders.model');
 const errorsHelper = require('../../../Helpers/errors');
+const messagesHelper = require('../../../Helpers/messages');
 
 exports.getAll = (req, res, next) => {
     Order.find()
@@ -17,8 +18,7 @@ exports.getAll = (req, res, next) => {
                     }
                 }
             });
-            console.log(req);
-            res.status(201).json(data)
+            messagesHelper.stringResponseMessageAndData(res,200,'All Orders', data);
         })
         .catch(err => {
             errorsHelper.catchError(res, err);

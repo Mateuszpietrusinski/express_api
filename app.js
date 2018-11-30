@@ -3,7 +3,6 @@ const app = express();
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const mongoose = require('mongoose');
-
 //API Routes
 const productsRoutes = require("./api/Routes/products");
 const orderRoutes = require("./api/Routes/orders");
